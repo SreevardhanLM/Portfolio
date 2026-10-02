@@ -1,127 +1,106 @@
-import "../CSS/Skill.css"
-import "../CSS/AboutContent.css"
-import linuxIcon from "../img/pngwing.com.png"
-import JavascriptIcon from "../img/Javascript.webp"
-import githubIcon from "../img/github_logo_icon_229278.webp"
-import RestApiIcon from "../img/Api.png"
-import ReactIcon from "../img/react-logo-rounded-free-png.webp"
-import NodejsIcon from "../img/Nodejs.png"
-import TailwindIcon from "../img/tailwindcss.png"
-import SoftwareDevIcon from "../img/SoftwareDeveloper.png"
-import ProblemSolvingIcon from "../img/problem-solving.png"
-import { useEffect, useState } from "react"
+import { motion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
+import {
+  SiJavascript,
+  SiReact,
+  SiNodedotjs,
+  SiTailwindcss,
+  SiGit,
+  SiLinux,
+  SiExpress,
+  SiMongodb,
+  SiPostgresql,
+} from 'react-icons/si'
+import { FiCode, FiCpu, FiDatabase } from 'react-icons/fi'
+import { HiOutlineLightBulb } from 'react-icons/hi'
+import '../CSS/Skill.css'
 
-function skillHover(){
-    const skillBox = document.querySelectorAll('.Skill-box');
-    const handleMouseOver = (event) => {
-        event.currentTarget.style.transform = 'translateY(-10px)';
-    };
-    const handleMouseOut = (event) => {
-        event.currentTarget.style.transform = 'translateY(0px)';
-    };
+const SKILL_CATEGORIES = [
+  {
+    title: 'Frontend',
+    icon: <FiCode />,
+    skills: [
+      { name: 'JavaScript', icon: <SiJavascript /> },
+      { name: 'React', icon: <SiReact /> },
+      { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
+    ],
+  },
+  {
+    title: 'Backend',
+    icon: <FiDatabase />,
+    skills: [
+      { name: 'Node.js', icon: <SiNodedotjs /> },
+      { name: 'Express.js', icon: <SiExpress /> },
+      { name: 'MongoDB', icon: <SiMongodb /> },
+      { name: 'PostgreSQL', icon: <SiPostgresql /> },
+    ],
+  },
+  {
+    title: 'Tools & Other',
+    icon: <FiCpu />,
+    skills: [
+      { name: 'Git & GitHub', icon: <SiGit /> },
+      { name: 'REST APIs', icon: <FiCode /> },
+      { name: 'Linux', icon: <SiLinux /> },
+      { name: 'Problem Solving', icon: <HiOutlineLightBulb /> },
+    ],
+  },
+]
 
-    skillBox.forEach((box) => {
-        box.addEventListener('mouseenter', handleMouseOver);
-        box.addEventListener('mouseleave', handleMouseOut);
-    });
-
-
-    return () => {
-        skillBox.forEach((box) => {
-            box.removeEventListener('mouseenter', handleMouseOver);
-            box.removeEventListener('mouseleave', handleMouseOut);
-        });
-    };
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
 }
 
-function Skill(){
-    const [hoveredSkill, setHoveredSkill] = useState(null);
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: 'easeOut' },
+  },
+}
 
-    useEffect(() => skillHover(), []);
+function Skill() {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
 
-    return(
-        <div id="Skill" className="Skill-Section">
-            <div className="Skill-banner">
-                <h4 className="Heading">Skill...</h4>
-                <ul className="Skill-Display">
-                <li className="Skill-box" onMouseEnter={() => setHoveredSkill("Software Developer")} onMouseLeave={() => setHoveredSkill(null)}>
-                    Software Developer
-                    <img className="icon" src={SoftwareDevIcon} alt="Software Developer logo" style={{
-                        opacity: hoveredSkill === "Software Developer" ? 1 : 0,
-                        visibility: hoveredSkill === "Software Developer" ? "visible" : "hidden"
-                    }} />
-                </li>
-                <li className="Skill-box" onMouseEnter={() => setHoveredSkill("Javascript")} onMouseLeave={() => setHoveredSkill(null)}>
-                    Javascript
-                    <img className="icon" src={JavascriptIcon} alt="Javascript logo" style={{
-                        opacity: hoveredSkill === "Javascript" ? 1 : 0,
-                        visibility: hoveredSkill === "Javascript" ? "visible" : "hidden"
-                    }} /></li>
-                <li className="Skill-box" onMouseEnter={() => setHoveredSkill("React")} onMouseLeave={() => setHoveredSkill(null)}>
-                    React
-                    <img className="icon" src={ReactIcon} alt="React logo" style={{
-                        opacity: hoveredSkill === "React" ? 1 : 0,
-                        visibility: hoveredSkill === "React" ? "visible" : "hidden"
-                    }} />
-                </li>
-                <li className="Skill-box" onMouseEnter={() => setHoveredSkill("Problem Solving")} onMouseLeave={() => setHoveredSkill(null)}>
-                    Problem Solving
-                    <img className="icon" src={ProblemSolvingIcon} alt="Problem Solving logo" style={{
-                        opacity: hoveredSkill === "Problem Solving" ? 1 : 0,
-                        visibility: hoveredSkill === "Problem Solving" ? "visible" : "hidden"
-                    }} />
-                </li>
-                <li className="Skill-box"
-                onMouseEnter={() => setHoveredSkill("Tailwind CSS")} onMouseLeave={() => setHoveredSkill(null)}>
-                    Tailwind CSS
-                    <img className="icon" src={TailwindIcon} alt="Tailwind CSS logo" style={{
-                        opacity: hoveredSkill === "Tailwind CSS" ? 1 : 0,
-                        visibility: hoveredSkill === "Tailwind CSS" ? "visible" : "hidden"
-                    }} />
-                </li>
-                <li className="Skill-box" onMouseEnter={() => setHoveredSkill("Node.js")} onMouseLeave={() => setHoveredSkill(null)}>
-                    Node.js
-                    <img className="icon" src={NodejsIcon} alt="Node.js logo" style={{
-                        opacity: hoveredSkill === "Node.js" ? 1 : 0,
-                        visibility: hoveredSkill === "Node.js" ? "visible" : "hidden"
-                    }} />
-                </li>
-                <li className="Skill-box"
-                onMouseEnter={() => setHoveredSkill("Git & GitHub")}
-                onMouseLeave={() => setHoveredSkill(null)}>
-                    Git & GitHub
-                    <img className="icon" src={githubIcon} alt="GitHub logo" style={{
-                        opacity: hoveredSkill === "Git & GitHub" ? 1 : 0,
-                        visibility: hoveredSkill === "Git & GitHub" ? "visible" : "hidden"
-                    }} />
-                </li>
-                <li className="Skill-box" onMouseEnter={() => setHoveredSkill("REST APIs")} onMouseLeave={() => setHoveredSkill(null)}>
-                    REST APIs
-                    <img className="icon" src={RestApiIcon} alt="REST API logo" style={{
-                        opacity: hoveredSkill === "REST APIs" ? 1 : 0,
-                        visibility: hoveredSkill === "REST APIs" ? "visible" : "hidden"
-                    }} />
-                </li>
-                    <li
-                        className="Skill-box"
-                        onMouseEnter={() => setHoveredSkill("Linux")}
-                        onMouseLeave={() => setHoveredSkill(null)}
-                    >
-                        Linux
-                        <img
-                            className="icon"
-                            src={linuxIcon}
-                            alt="Linux logo"
-                            style={{
-                                opacity: hoveredSkill === "Linux" ? 1 : 0,
-                                visibility: hoveredSkill === "Linux" ? "visible" : "hidden"
-                            }}
-                        />
-                    </li>
-                </ul>
-            </div>
+  return (
+    <section id="Skills" className="skills-section section">
+      <motion.div
+        ref={ref}
+        className="skills-inner"
+        initial="hidden"
+        animate={inView ? 'visible' : 'hidden'}
+        variants={containerVariants}
+      >
+        <h2 className="section-heading">
+          <span className="heading-accent">02.</span> Skills & Technologies
+        </h2>
+        <div className="skills-grid">
+          {SKILL_CATEGORIES.map(cat => (
+            <motion.div
+              key={cat.title}
+              className="skill-category"
+              variants={itemVariants}
+            >
+              <h3 className="skill-category-title">
+                <span className="skill-category-icon">{cat.icon}</span>
+                {cat.title}
+              </h3>
+              <ul className="skill-list">
+                {cat.skills.map(skill => (
+                  <li key={skill.name} className="skill-pill">
+                    <span className="skill-icon">{skill.icon}</span>
+                    {skill.name}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
         </div>
-    )
+      </motion.div>
+    </section>
+  )
 }
 
 export default Skill

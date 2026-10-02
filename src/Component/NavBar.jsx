@@ -1,81 +1,92 @@
+import { useState, useEffect } from 'react'
+import '../CSS/NavBar.css'
 
-import React from "react";
-import "../CSS/NavBar.css"
-import { Link } from "react-router-dom";
-import About from "./About"
-import AboutContent from "./AboutContent"
-import Skill from "./skill"
-import Project from "./project"
-import Footer from "./Footer"
-function NaveBar(){
+const NAV_LINKS = [
+  { id: 'Home', label: 'Home' },
+  { id: 'About', label: 'About' },
+  { id: 'Skills', label: 'Skills' },
+  { id: 'Projects', label: 'Projects' },
+  { id: 'Contact', label: 'Contact' },
+]
 
-    const [open,setopen]=React.useState(false);
+function NavBar() {
+  const [open, setOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('Home')
+  const [scrolled, setScrolled] = useState(false)
 
-    const handleToggle = () => setopen(open => !open);
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 768) setOpen(false)
+    }
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('resize', onResize)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('resize', onResize)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [])
 
-        React.useEffect(() => {
-        const onResize = () => {
-            if (window.innerWidth > 768) setopen(false);
-        };
-        window.addEventListener("resize", onResize);
-        return () => window.removeEventListener("resize", onResize);
-    }, []);
-        const closeAndScroll = (e, id) => {
-        setopen(false);
-        }
+  useEffect(() => {
+    const sections = NAV_LINKS.map(l => document.getElementById(l.id)).filter(Boolean)
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id)
+          }
+        })
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    )
+    sections.forEach(s => observer.observe(s))
+    return () => observer.disconnect()
+  }, [])
 
-        // Handle toggle functionality here
-    
-        // const slide= style.width('500px')
-        // if(window.matchMedia("(max-width: 500px)").matches){
-        // const dropdown = document.querySelector('.nav-dropdown');
-        // const navLink = document.querySelectorAll('.nav_drop-link');
-        
-        //     dropdown.style.display = dropdown.style.display === 'none' ? "flex" : 'none';
+  const handleClick = (e, id) => {
+    setOpen(false)
+    const el = document.getElementById(id)
+    if (el) {
+      e.preventDefault()
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 
-        //     navLink.forEach(link =>{
-        //         link.style.display = dropdown.style.display === 'flex' ? 'block' : 'none'
-        //         link.style.flexBasis = dropdown.style.display === 'flex' ? '10.33%' : ''
-        //         link.style.cursor = dropdown.style.display === 'flex' ? 'pointer' : 'default'
-        //     })
-
-    
-
-    return(
-        <nav className="navbar" role="navigation" aria-label="Main Navigation">
-            <div className="navbar-head">
-                Sreevardhan
-            </div>
-                <button className={`toggle ${open ? "is-open" : ""}`} aria-controls="primary-navigation" aria-expanded={open} onClick={handleToggle} aria-label={open ? "Close menu" : "Open menu"}>
-                <span className="nav-top_line common" />
-                <span className="nav-middle_line common" />
-                <span className="nav-bottom_line common" />
-                </button>
-            <ul id="primary-navigation" className={`navbar-links nav-dropdown${open ? " open" : ""}`}>
-
-                <li>
-                    {/* <a href='#Home' to="/" className="navbar-link nav_drop-link nav-btn">Home</a> */}
-                    <a href="#Home" className="navbar-link" onClick={(e) => closeAndScroll(e, "Home")}>Home</a>
-                </li>
-                <li>
-                    <a href="#About" className="navbar-link" onClick={(e) => closeAndScroll(e, "About")}>About</a>
-
-                </li>
-                <li>
-                    <a href="#Skill" className="navbar-link" onClick={(e) => closeAndScroll(e, "Skill")}>Skill</a>
-                </li>
-                <li>
-                    <a href="#Project" className="navbar-link" onClick={(e) => closeAndScroll(e, "Project")}>Project</a>
-                </li>
-                <li>
-                    <a href="#Footer" className="navbar-link" onClick={(e) => closeAndScroll(e, "Footer")}>contact</a>
-                </li>
-            </ul>
-        </nav>
-
-    );
+  return (
+    <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`} role="navigation" aria-label="Main Navigation">
+      <a href="#Home" className="navbar-brand" onClick={e => handleClick(e, 'Home')}>
+        <span className="navbar-logo">&lt;</span>
+        Sreevardhan
+        <span className="navbar-logo"> /&gt;</span>
+      </a>
+      <button
+        className={`navbar-toggle ${open ? 'is-open' : ''}`}
+        aria-controls="primary-navigation"
+        aria-expanded={open}
+        onClick={() => setOpen(o => !o)}
+        aria-label={open ? 'Close menu' : 'Open menu'}
+      >
+        <span className="bar" />
+        <span className="bar" />
+        <span className="bar" />
+      </button>
+      <ul id="primary-navigation" className={`navbar-menu ${open ? 'open' : ''}`}>
+        {NAV_LINKS.map(({ id, label }) => (
+          <li key={id}>
+            <a
+              href={`#${id}`}
+              className={`navbar-link ${activeSection === id ? 'active' : ''}`}
+              onClick={e => handleClick(e, id)}
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
 }
 
-
-
-export default NaveBar
+export default NavBar
