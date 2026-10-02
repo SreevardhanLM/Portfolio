@@ -35,13 +35,29 @@
     font-size: 0.9rem;
     font-weight: 500;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
-    transition: transform 0.2s;
+    transition: transform 0.3s ease, background 0.3s ease;
     cursor: pointer;
     transform: translateY(0px);
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
 }
 
 .Skill-box:hover{
     background: gray;
-    transition: background 0.5s;
+    transform: translateY(-10px);
+}
+
+.icon{
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    flex-shrink: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
