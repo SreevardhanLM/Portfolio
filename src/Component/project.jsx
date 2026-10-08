@@ -12,7 +12,7 @@ const PROJECTS = [
       'A recipe search application that allows users to search, bookmark, and upload custom recipes. Features include pagination, dynamic servings adjustment, and local storage persistence.',
     image: Forkify,
     tags: ['JavaScript', 'HTML', 'CSS', 'REST API', 'MVC'],
-    github: 'https://github.com/Sreevardhan2002-cell',
+    github: 'https://github.com/SreevardhanLM/Forkify-Projact-JavaScript.git',
     live: null,
   },
   {
@@ -21,7 +21,7 @@ const PROJECTS = [
       'A movie discovery application that lets users browse, search, and explore movie details using a third-party API. Features responsive design and smooth UI interactions.',
     image: MovieApp,
     tags: ['React', 'API Integration', 'CSS'],
-    github: 'https://github.com/Sreevardhan2002-cell',
+    github: 'https://github.com/SreevardhanLM/MovieUi.git',
     live: null,
   },
 ]
